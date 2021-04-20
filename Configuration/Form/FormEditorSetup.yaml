@@ -12,7 +12,7 @@ TYPO3:
                                         selectOptions:
                                             35:
                                                 value: 'PdfFinisher'
-                                                label: 'PDF Configuration'
+                                                label: 'PDF configuration'
                                 propertyCollections:
                                     finishers:
                                         # add finisher fields
@@ -22,13 +22,13 @@ TYPO3:
                                                 __inheritances:
                                                     10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
                                                 100:
-                                                    label: 'PDF Configuration'
+                                                    label: 'PDF configuration'
 
                                                 # PDF template
                                                 110:
                                                     identifier: 'pdfTemplate'
                                                     templateName: 'Inspector-Typo3WinBrowserEditor'
-                                                    label: 'PDF Template record'
+                                                    label: 'PDF template record'
                                                     propertyPath: 'options.pdfTemplate'
                                                     buttonLabel: 'PDF template'
                                                     browsableType: 'tx_formpdf_domain_model_pdftemplate'
@@ -68,14 +68,14 @@ TYPO3:
                                                 150:
                                                     identifier: 'openPdfNewWindows'
                                                     templateName: 'Inspector-CheckboxEditor'
-                                                    label: 'Open PDF in new window'
+                                                    label: 'PDF link in confirmation message'
                                                     propertyPath: 'options.openPdfNewWindows'
 
                     finishersDefinition:
                         PdfFinisher:
                             formEditor:
                                 iconIdentifier: 'pdf-finisher'
-                                label: 'PDF Configuration'
+                                label: 'PDF configuration'
                                 predefinedDefaults:
                                     options:
                                         pdfTemplate: ''

@@ -1,22 +1,25 @@
 {
-    "name": "brightside/form-pdf",
+    "name": "t3brightside/form-pdf",
     "type": "typo3-cms-extension",
-    "description": "form_pdf PDF finisher for form extension.",
+    "version": "1.1.1",
+    "description": "TYPO3 form finisher to write form data into pre-existing PDF file.",
+    "homepage": "https://github.com/t3brightside/form_pdf/",
+    "keywords": ["TYPO3", "PDF", "form"],
+    "license": "GPL-3.0+",
     "authors": [
         {
             "name": "Mykola Orlenko",
             "role": "Developer",
-            "email": "info@t3brightside.com",
+            "email": "mykola.orlenko@web-spectr.com",
             "homepage": "https://t3brightside.com"
         }
     ],
     "keywords": [
       "form"
     ],
-    "license": ["LGPL-2.1-or-later"],
     "require": {
-        "typo3/cms-core": ">=8.7.0 <=10.4.99",
-        "typo3/cms-form": ">=8.7.0 <=10.4.99",
+        "typo3/cms-core": "^10.4",
+        "typo3/cms-form": "^10.4",
         "mpdf/mpdf": "^8.0"
     },
     "autoload": {

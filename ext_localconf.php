@@ -25,7 +25,7 @@ $boot = function () {
         $iconRegistry->registerIcon(
             'pdf-finisher',
             \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-            ['source' => 'EXT:form_pdf/ext_icon.svg']
+            ['source' => 'EXT:form_pdf/Resources/Public/Icons/Extension.svg']
         );
     }
 
