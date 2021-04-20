@@ -1,0 +1,38 @@
+TYPO3:
+    CMS:
+        Form:
+            prototypes:
+                standard:
+                    finishersDefinition:
+                        PdfFinisher:
+                            implementationClassName: 'Brightside\FormPdf\Domain\Finishers\PdfFinisher'
+                        EmailToSender:
+                            implementationClassName: 'Brightside\FormPdf\Domain\Finishers\EmailFinisher'
+                        EmailToReceiver:
+                            implementationClassName: 'Brightside\FormPdf\Domain\Finishers\EmailFinisher'
+                        Confirmation:
+                            implementationClassName: 'Brightside\FormPdf\Domain\Finishers\ConfirmationFinisher'
+                            options:
+                                templateName: ConfirmationWithLink
+                                templateRootPaths:
+                                    20: 'EXT:form_pdf/Resources/Private/Frontend/Templates/Finishers/Confirmation/'
+
+                    formEditor:
+                        # TYPO3 8–9
+                        translationFile:
+                            10: 'EXT:form/Resources/Private/Language/Database.xlf'
+                            20: 'EXT:form_pdf/Resources/Private/Language/locallang.xlf'
+
+                        # TYPO3 10
+                        translationFiles:
+                            1000: 'EXT:form_pdf/Resources/Private/Language/locallang.xlf'
+
+                    formEngine:
+                        # TYPO3 8–9
+                        translationFile:
+                            10: 'EXT:form/Resources/Private/Language/Database.xlf'
+                            20: 'EXT:form_pdf/Resources/Private/Language/locallang.xlf'
+
+                        # TYPO3 10
+                        translationFiles:
+                            1000: 'EXT:form_pdf/Resources/Private/Language/locallang.xlf'

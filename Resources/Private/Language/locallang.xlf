@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file source-language="en" datatype="plaintext" original="EXT:form_pdf/Resources/Private/Language/locallang.xlf" product-name="form_pdf">
+        <header/>
+        <body>
+            <trans-unit id="form_pdf.openPdfLink" xml:space="preserve">
+                <source>Click to open PDF.</source>
+            </trans-unit>
+            <trans-unit id="form_pdf.tasks.cleaner.name" xml:space="preserve">
+                <source>Remove PDF files older then XX days</source>
+            </trans-unit>
+            <trans-unit id="form_pdf.tasks.cleaner.description" xml:space="preserve">
+                <source>Days: Remove data older then XX days.</source>
+            </trans-unit>
+            <trans-unit id="form_pdf.tasks.cleaner.days" xml:space="preserve">
+                <source>Days: Remove data older then XX days.</source>
+            </trans-unit>
+            <trans-unit id="tasks.cleaner.empty.days" xml:space="preserve">
+                <source>"Days" Could not be empty</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

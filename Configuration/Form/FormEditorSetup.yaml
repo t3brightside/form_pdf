@@ -1,0 +1,85 @@
+TYPO3:
+    CMS:
+        Form:
+            prototypes:
+                standard:
+                    formElementsDefinition:
+                        Form:
+                            formEditor:
+                                editors:
+                                    900:
+                                        # Extend finisher drop down
+                                        selectOptions:
+                                            35:
+                                                value: 'PdfFinisher'
+                                                label: 'PDF Configuration'
+                                propertyCollections:
+                                    finishers:
+                                        # add finisher fields
+                                        25:
+                                            identifier: 'PdfFinisher'
+                                            editors:
+                                                __inheritances:
+                                                    10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                                                100:
+                                                    label: 'PDF Configuration'
+
+                                                # PDF template
+                                                110:
+                                                    identifier: 'pdfTemplate'
+                                                    templateName: 'Inspector-Typo3WinBrowserEditor'
+                                                    label: 'PDF Template record'
+                                                    propertyPath: 'options.pdfTemplate'
+                                                    buttonLabel: 'PDF template'
+                                                    browsableType: 'tx_formpdf_domain_model_pdftemplate'
+                                                    iconIdentifier: mimetypes-pdf
+                                                    propertyValidators:
+                                                        10: 'NotEmpty'
+                                                        20: 'Integer'
+
+                                                # HTML Template
+                                                120:
+                                                    identifier: 'htmlTemplate'
+                                                    templateName: 'Inspector-Typo3WinBrowserEditor'
+                                                    label: 'HTML template record'
+                                                    propertyPath: 'options.htmlTemplate'
+                                                    buttonLabel: 'HTML template'
+                                                    browsableType: 'tx_formpdf_domain_model_htmltemplate'
+                                                    iconIdentifier: mimetypes-text-html
+                                                    propertyValidators:
+                                                        10: 'NotEmpty'
+                                                        20: 'Integer'
+
+                                                # is attached to receiver mail
+                                                130:
+                                                    identifier: 'isPdfAttachedToReceiver'
+                                                    templateName: 'Inspector-CheckboxEditor'
+                                                    label: 'Attach PDF to receiver mail'
+                                                    propertyPath: 'options.isPdfAttachedToReceiver'
+
+                                                # is attached to user mail
+                                                140:
+                                                    identifier: 'isPdfAttachedToUser'
+                                                    templateName: 'Inspector-CheckboxEditor'
+                                                    label: 'Attach PDF to user mail'
+                                                    propertyPath: 'options.isPdfAttachedToUser'
+
+                                                # open in new windows
+                                                150:
+                                                    identifier: 'openPdfNewWindows'
+                                                    templateName: 'Inspector-CheckboxEditor'
+                                                    label: 'Open PDF in new window'
+                                                    propertyPath: 'options.openPdfNewWindows'
+
+                    finishersDefinition:
+                        PdfFinisher:
+                            formEditor:
+                                iconIdentifier: 'pdf-finisher'
+                                label: 'PDF Configuration'
+                                predefinedDefaults:
+                                    options:
+                                        pdfTemplate: ''
+                                        htmlTemplate: ''
+                                        isPdfAttachedToReceiver: true
+                                        isPdfAttachedToUser: true
+                                        openPdfNewWindows: false

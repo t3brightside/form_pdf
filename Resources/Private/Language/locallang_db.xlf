@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:form_pdf/Resources/Private/Language/locallang_db" date="2021-04-05T14:38:20Z" product-name="form_pdf">
+		<header/>
+		<body>
+			<trans-unit id="tx_formpdf_domain_model_pdftemplate" resname="tx_formpdf_domain_model_pdftemplate">
+				<source>Pdf Template</source>
+			</trans-unit>
+			<trans-unit id="tx_formpdf_domain_model_pdftemplate.file" resname="tx_formpdf_domain_model_pdftemplate.file">
+				<source>File</source>
+			</trans-unit>
+			<trans-unit id="tx_formpdf_domain_model_htmltemplate" resname="tx_formpdf_domain_model_htmltemplate">
+				<source>Html Template</source>
+			</trans-unit>
+			<trans-unit id="tx_formpdf_domain_model_htmltemplate.file" resname="tx_formpdf_domain_model_htmltemplate.file">
+				<source>File</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

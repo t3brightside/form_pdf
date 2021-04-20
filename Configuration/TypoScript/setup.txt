@@ -1,0 +1,18 @@
+plugin.tx_form {
+    settings {
+        yamlConfigurations {
+            2000 = EXT:form_pdf/Configuration/Form/BaseSetup.yaml
+            2001 = EXT:form_pdf/Configuration/Form/FormEngineSetup.yaml
+        }
+    }
+}
+
+module.tx_form {
+    settings {
+        yamlConfigurations {
+            2000 = EXT:form_pdf/Configuration/Form/BaseSetup.yaml
+            2001 = EXT:form_pdf/Configuration/Form/FormEditorSetup.yaml
+            2002 = EXT:form_pdf/Configuration/Form/FormEngineSetup.yaml
+        }
+    }
+}

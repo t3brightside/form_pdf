@@ -1,0 +1,15 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
+<div id="{form.identifier}">
+    <f:if condition="{isPreparedMessage}">
+        <f:then>
+            {message -> f:format.raw()}
+        </f:then>
+        <f:else>
+            {message -> f:format.nl2br()}
+        </f:else>
+    </f:if>
+    <f:if condition="{tempPdfFile}">
+        <div><a href="/index.php?eID=pdfform&file={tempPdfFile}" target="_blank"><f:translate key="LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.openPdfLink"/></a></div>
+    </f:if>
+</div>
+</html>
