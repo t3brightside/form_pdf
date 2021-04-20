@@ -1,4 +1,4 @@
-# Form PDF Finisher
+# Form PDF Finisher / form_pdf
 [![Packagist](https://img.shields.io/packagist/v/t3brightside/form_pdf.svg?style=flat)](https://packagist.org/packages/t3brightside/form_pdf)
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE)
 [![Brightside](https://img.shields.io/badge/by-t3brightside.com-orange.svg?style=flat)](https://t3brightside.com)
@@ -15,6 +15,7 @@ Install with composer
 composer require t3brightside/form-pdf
 
 ```
+Or find **form_pdf** in TER.
 ### How it works
 
 The PDF file is generated using [mPDF PHP library](https://mpdf.github.io/).
@@ -82,6 +83,9 @@ It extends core finishers
 - [GitHub](https://github.com/t3brightside/form_pdf)
 - [Packagist](https://packagist.org/packages/t3brightside/form_pdf)
 - [TER](https://extensions.typo3.org/extension/form_pdf/)
+
+## Author
+Mykola Orlenko - [mykola.orlenko@web-spectr.com](mailto:mykola.orlenko@web-spectr.com)
 
 ## Development and maintenance
 
