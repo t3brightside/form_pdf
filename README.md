@@ -13,7 +13,6 @@
 Install with composer
 ```bash
 composer require t3brightside/form-pdf
-
 ```
 Or find **form_pdf** in TER.
 ### How it works
@@ -85,7 +84,7 @@ It extends core finishers
 - [TER](https://extensions.typo3.org/extension/form_pdf/)
 
 ## Author
-Mykola Orlenko - [mykola.orlenko@web-spectr.com](mailto:mykola.orlenko@web-spectr.com)
+[Mykola Orlenko](https://github.com/okolya) - [mykola.orlenko@web-spectr.com](mailto:mykola.orlenko@web-spectr.com)
 
 ## Development and maintenance
 
