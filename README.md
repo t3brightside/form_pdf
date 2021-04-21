@@ -14,7 +14,8 @@ Install with composer (recommended)
 ```bash
 composer require t3brightside/form-pdf
 ```
-or find *form_pdf* in TER (version 1.1.1 only).
+No package in TER but for non composer install you can download version 1.1.1 and install manually.
+
 ### How it works
 
 The PDF file is generated using [mPDF PHP library](https://mpdf.github.io/).
