@@ -1,7 +1,7 @@
 {
     "name": "t3brightside/form-pdf",
     "type": "typo3-cms-extension",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "TYPO3 form finisher to write form data into pre-existing PDF file.",
     "homepage": "https://github.com/t3brightside/form_pdf/",
     "keywords": ["TYPO3", "PDF", "form"],
@@ -10,9 +10,14 @@
         {
             "name": "Mykola Orlenko",
             "role": "Developer",
-            "email": "mykola.orlenko@web-spectr.com",
-            "homepage": "https://t3brightside.com"
+            "email": "mykola.orlenko@web-spectr.com"
+        },
+        {
+            "name": "Tanel Põld",
+            "role": "Project manager",
+            "homepage": "https://t3brightside.com/"
         }
+
     ],
     "keywords": [
       "form"
