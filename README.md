@@ -38,10 +38,11 @@ This example related to default contact form.
 
 2. Prepare 2 records: PDF Template, HTML templates.
 
-   ![new record](./Documentation/images/new_record.png)
+  ![new record](./Documentation/images/new_record.png)
 
 3. Add PDF Finisher at the first position in the form.
-![finisher](./Documentation/images/finisher.png)
+
+  ![finisher](./Documentation/images/finisher.png)
 
 4. Select already created PDF Template and HTML Template.
 
