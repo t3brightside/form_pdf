@@ -14,7 +14,7 @@ Install with composer (recommended)
 ```bash
 composer require t3brightside/form-pdf
 ```
-No package in TER but for non composer install you can download version 1.1.1 and install manually.
+No package in TER but for non composer install you can download version 1.1.1 and install it manually.
 
 ### How it works
 
