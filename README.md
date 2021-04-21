@@ -1,5 +1,5 @@
 # Form PDF Finisher / form_pdf
-[![Packagist](https://img.shields.io/packagist/v/t3brightside/form_pdf.svg?style=flat)](https://packagist.org/packages/t3brightside/form-pdf)
+[![Packagist](https://img.shields.io/packagist/v/t3brightside/form-pdf.svg?style=flat)](https://packagist.org/packages/t3brightside/form-pdf)
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE)
 [![Brightside](https://img.shields.io/badge/by-t3brightside.com-orange.svg?style=flat)](https://t3brightside.com)
 
