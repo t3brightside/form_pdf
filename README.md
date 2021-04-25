@@ -14,9 +14,10 @@ Install with composer (recommended)
 ```bash
 composer require t3brightside/form-pdf
 ```
-v1.1.1 is available in TER but mPDF fonts have been removed from Resources/Private/PHP/mpdf/mpdf/ttfonts/
+- **v1.1.2** is composer only
+- **v1.1.1** is available in TER but mPDF fonts have been removed from Resources/Private/PHP/mpdf/mpdf/ttfonts/
 find the fonts here: https://github.com/t3brightside/form_pdf/tree/1.1.1/Resources/Private/PHP/mpdf/mpdf/ttfonts
- or grab the package and install it manually: https://github.com/t3brightside/form_pdf/tree/1.1.1
+or grab the package and install it manually: https://github.com/t3brightside/form_pdf/tree/1.1.1
 
 ### How it works
 
