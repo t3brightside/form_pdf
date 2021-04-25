@@ -3,7 +3,7 @@
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE)
 [![Brightside](https://img.shields.io/badge/by-t3brightside.com-orange.svg?style=flat)](https://t3brightside.com)
 
-**TYPO3 form finisher to write form data into pre-existing PDF file.**
+**TYPO3 form finisher to write form data into pre-defined PDF file.**
 - Sends PDF as an attachment in user and receiver e-mails
 - Provides link to the PDF file in the confirmation message & deletes file after clicking the link
 - Adds scheduler task to remove the file after certain amount of time if link is not clicked     
@@ -14,7 +14,9 @@ Install with composer (recommended)
 ```bash
 composer require t3brightside/form-pdf
 ```
-No package in TER but for non composer install you can download version 1.1.1 and install it manually.
+v1.1.1 is available in TER but mPDF fonts have been removed from Resources/Private/PHP/mpdf/mpdf/ttfonts/
+find the fonts here: https://github.com/t3brightside/form_pdf/tree/1.1.1/Resources/Private/PHP/mpdf/mpdf/ttfonts
+ or grab the package and install it manually: https://github.com/t3brightside/form_pdf/tree/1.1.1
 
 ### How it works
 
