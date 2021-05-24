@@ -49,10 +49,13 @@ class PdfResponse
             && @is_file($uploadedTempFile)
         ) {
             $mpdf = new \Mpdf\Mpdf();
-
+            $mpdf->SetDocTemplate($uploadedTempFile);
             $pagecount = $mpdf->SetSourceFile($uploadedTempFile);
-            $tplId = $mpdf->importPage($pagecount);
-            $mpdf->useTemplate($tplId);
+            for ($i=1; $i<=$pagecount; $i++) {
+                $import_page = $mpdf->importPage($i);
+                $mpdf->useTemplate($import_page);
+                if ($i < $pagecount) $mpdf->AddPage();
+            }
 
             // Delete tmp file
             @unlink($uploadedTempFile);

@@ -1,2 +1,4 @@
 * 1.1.2
   - Composer only version, removing libs from Resources/Private/PHP/
+* 1.1.3
+  – Enable multi page PDF source files

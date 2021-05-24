@@ -51,13 +51,17 @@ class PdfService
         }
 
         $mpdf = new \Mpdf\Mpdf();
-        $mpdf->AddPage();
-        $pagecount = $mpdf->setSourceFile($pdfFile);
-        $tplId = $mpdf->importPage($pagecount);
-        $mpdf->useTemplate($tplId);
-
-        $htmlParsed = $this->parse($htmlFile, $values);
-        $mpdf->WriteHTML($htmlParsed);
+        $mpdf->SetDocTemplate($pdfFile);
+        $pagecount = $mpdf->SetSourceFile($pdfFile);
+        for ($i=1; $i<=$pagecount; $i++) {
+          if ($i == 1) {
+            $htmlParsed = $this->parse($htmlFile, $values);
+            $mpdf->WriteHTML($htmlParsed);
+          }
+          $import_page = $mpdf->importPage($i);
+          $mpdf->useTemplate($import_page);
+          if ($i < $pagecount) $mpdf->AddPage();
+        }
 
         return $mpdf;
     }
