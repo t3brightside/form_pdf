@@ -48,7 +48,9 @@ class PdfResponse
             GeneralUtility::validPathStr($uploadedTempFile)
             && @is_file($uploadedTempFile)
         ) {
-            $mpdf = new \Mpdf\Mpdf();
+//            $mpdf = new \Mpdf\Mpdf();
+            $mpdf = new \Mpdf\Mpdf(['tempDir' => '../var/']);
+
             $mpdf->SetDocTemplate($uploadedTempFile);
             $pagecount = $mpdf->SetSourceFile($uploadedTempFile);
             for ($i=1; $i<=$pagecount; $i++) {
