@@ -50,7 +50,9 @@ class PdfService
             return null;
         }
 
-        $mpdf = new \Mpdf\Mpdf();
+   //     $mpdf = new \Mpdf\Mpdf();
+        $mpdf = new \Mpdf\Mpdf(['tempDir' => '../var/']);
+
         $mpdf->SetDocTemplate($pdfFile);
         $pagecount = $mpdf->SetSourceFile($pdfFile);
         for ($i=1; $i<=$pagecount; $i++) {
