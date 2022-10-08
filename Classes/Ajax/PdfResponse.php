@@ -21,16 +21,20 @@ class PdfResponse
      */
     public function processRequest(ServerRequestInterface $request)
     {
+        $response = GeneralUtility::makeInstance(Response::class);
         $param = $request->getQueryParams();
         $mpdf = null;
         if (isset($param['file']) && $param['file']) {
             $mpdf = $this->pdf($param['file']);
         }
         if ($mpdf) {
-            $mpdf->Output(PdfService::PDF_NAME, \Mpdf\Output\Destination::INLINE);
+            $filename = $this->filename = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('filename');
+            $mpdf->Output($filename, \Mpdf\Output\Destination::INLINE);
         } else {
-            return (new Response())->withStatus(404);
+            return $response->withStatus(404);
         }
+
+        return $response;
     }
 
     /**
@@ -48,7 +52,6 @@ class PdfResponse
             GeneralUtility::validPathStr($uploadedTempFile)
             && @is_file($uploadedTempFile)
         ) {
-//          $mpdf = new \Mpdf\Mpdf();
             $mpdf = new \Mpdf\Mpdf(['tempDir' => Environment::getVarPath()]);
             $mpdf->SetDocTemplate($uploadedTempFile);
             $pagecount = $mpdf->SetSourceFile($uploadedTempFile);

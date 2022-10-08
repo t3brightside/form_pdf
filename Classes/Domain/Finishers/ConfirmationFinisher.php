@@ -57,7 +57,6 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
             );
 
             if ($openPdfNewWindows) {
-
                 /** @var \Mpdf\Mpdf $mpdf */
                 $mpdf = $this->finisherContext->getFinisherVariableProvider()->get(
                     'Pdf',
@@ -70,13 +69,24 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
                     $mpdf->Output($tempPdfFile, \Mpdf\Output\Destination::FILE);
                 }
             }
+            $filename = $this->finisherContext->getFinisherVariableProvider()->get(
+                'Pdf',
+                'filename',
+                PdfService::PDF_NAME
+            );
         }
+        
+        $context = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class);
+        $langId = $context->getPropertyFromAspect('language', 'id');
         $standaloneView->assignMultiple([
             'message' => $message,
             'tempPdfFile' => $tempPdfFile ? PathUtility::basename($tempPdfFile) : '',
-            'isPreparedMessage' => !empty($contentElementUid)
+            'isPreparedMessage' => !empty($contentElementUid),
+            'langId' => $langId,
+            'filename' => $filename
         ]);
 
         return $standaloneView->render();
     }
 }
+
