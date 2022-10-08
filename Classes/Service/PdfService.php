@@ -5,6 +5,7 @@ namespace Brightside\FormPdf\Service;
 use \Mpdf\Mpdf;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\Core\Environment;
 
 class PdfService
 {
@@ -50,9 +51,8 @@ class PdfService
             return null;
         }
 
-   //     $mpdf = new \Mpdf\Mpdf();
-        $mpdf = new \Mpdf\Mpdf(['tempDir' => '../var/']);
-
+//      $mpdf = new \Mpdf\Mpdf();
+        $mpdf = new \Mpdf\Mpdf(['tempDir' => Environment::getVarPath()]);
         $mpdf->SetDocTemplate($pdfFile);
         $pagecount = $mpdf->SetSourceFile($pdfFile);
         for ($i=1; $i<=$pagecount; $i++) {
