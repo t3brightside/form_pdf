@@ -39,7 +39,7 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
         $replyToRecipients = $this->getRecipients('replyToRecipients', 'replyToAddress');
         $carbonCopyRecipients = $this->getRecipients('carbonCopyRecipients', 'carbonCopyAddress');
         $blindCarbonCopyRecipients = $this->getRecipients('blindCarbonCopyRecipients', 'blindCarbonCopyAddress');
-        $addHtmlPart = $this->isHtmlPartAdded();
+        $addHtmlPart = $this->parseOption('addHtmlPart');
         $attachUploads = $this->parseOption('attachUploads');
         $useFluidEmail = $this->parseOption('useFluidEmail');
         $title = $this->parseOption('title');

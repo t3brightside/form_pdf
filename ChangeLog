@@ -2,3 +2,6 @@
   - Composer only version, removing libs from Resources/Private/PHP/
 * 1.1.3
   – Enable multi page PDF source files
+* 1.2.0
+  – mpdf 8.1
+  – Drop TYPO3 10.4 and add TYPO3 11.5 LTS compatibility

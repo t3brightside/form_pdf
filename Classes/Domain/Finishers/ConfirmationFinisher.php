@@ -46,6 +46,7 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
             $this->finisherContext->getFormRuntime()
         );
 
+       
         //Extended
         $tempPdfFile = '';
         if ($this->finisherContext->getFinisherVariableProvider()->offsetExists('Pdf')) {
@@ -56,6 +57,7 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
             );
 
             if ($openPdfNewWindows) {
+
                 /** @var \Mpdf\Mpdf $mpdf */
                 $mpdf = $this->finisherContext->getFinisherVariableProvider()->get(
                     'Pdf',
@@ -69,7 +71,6 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
                 }
             }
         }
-
         $standaloneView->assignMultiple([
             'message' => $message,
             'tempPdfFile' => $tempPdfFile ? PathUtility::basename($tempPdfFile) : '',

@@ -63,7 +63,8 @@ class PdfFinisher extends \TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher
         $pdfTemplateUid = (int)$this->parseOption('pdfTemplate');
         /** @var PdfTemplate $pdfTemplate */
         $pdfTemplate = $this->pdfTemplateRepository->findByUid($pdfTemplateUid);
-        if ($pdfTemplate && $pdfTemplate->getUid() && file_exists($pdfTemplate->getFile()->getOriginalResource()->getPublicUrl())) {
+
+        if ($pdfTemplate && $pdfTemplate->getUid() && file_exists($_SERVER['DOCUMENT_ROOT'] . $pdfTemplate->getFile()->getOriginalResource()->getPublicUrl())) {
             $pdfTemplateFile = $pdfTemplate->getFile()->getOriginalResource()->getPublicUrl();
             $pdfFileName = $pdfTemplate->getFile()->getOriginalResource()->getName();
         } else {
@@ -75,11 +76,11 @@ class PdfFinisher extends \TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher
         /** @var HtmlTemplate $pdfTemplate */
         $htmlTemplate = $this->htmlTemplateRepository->findByUid($htmlTemplateUid);
         $htmlTemplateFile =
-            $htmlTemplate && $htmlTemplate->getUid() && file_exists($htmlTemplate->getFile()->getOriginalResource()->getPublicUrl())
+            $htmlTemplate && $htmlTemplate->getUid() && file_exists($_SERVER['DOCUMENT_ROOT'] . $htmlTemplate->getFile()->getOriginalResource()->getPublicUrl())
                 ? $htmlTemplate->getFile()->getOriginalResource()->getPublicUrl()
                 : null;
 
-        $mpdf = $this->pdfService->generate($pdfTemplateFile, $htmlTemplateFile, $this->parseForm());
+        $mpdf = $this->pdfService->generate($_SERVER['DOCUMENT_ROOT'] . $pdfTemplateFile, $_SERVER['DOCUMENT_ROOT'] . $htmlTemplateFile, $this->parseForm());
 
         $this->finisherContext->getFinisherVariableProvider()->add(
             $this->shortFinisherIdentifier,
