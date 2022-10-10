@@ -6,6 +6,21 @@
             <trans-unit id="form_pdf.openPdfLink" xml:space="preserve">
                 <source>Open PDF</source>
             </trans-unit>
+            <trans-unit id="form_pdf.pdfDeleted" xml:space="preserve">
+                <source>Deleted from server</source>
+            </trans-unit>
+            <trans-unit id="form_pdf.openPdfNoteTitle" xml:space="preserve">
+                <source>Note!</source>
+            </trans-unit>
+            <trans-unit id="form_pdf.openPdfNoteText" xml:space="preserve">
+                <source>PDF will be deleted from the server after opening it.</source>
+            </trans-unit>
+            <trans-unit id="form_pdf.openPdfNoteReload" xml:space="preserve">
+                <source>To open it again the form needs to be resubmitted or simply reload this page.</source>
+            </trans-unit>
+            <trans-unit id="form_pdf.leavingPage" xml:space="preserve">
+                <source>Leaving the page without opening the file means it will be deleted from the server in certain amount of time.</source>
+            </trans-unit>
             <trans-unit id="form_pdf.tasks.cleaner.name" xml:space="preserve">
                 <source>Remove PDF files older then XX days</source>
             </trans-unit>

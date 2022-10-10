@@ -9,7 +9,19 @@
         </f:else>
     </f:if>
     <f:if condition="{tempPdfFile}">
-         <p><a href="/index.php?eID=pdfform&L={langId}&file={tempPdfFile}&filename={filename}" target="_blank" class="btn form-pdf-link"><f:translate key="LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.openPdfLink"/></a></p>
+        <div class="form-pdf-download-block frame" style="font-size: 0.75em; border-top: 1px solid #666; margin-top: 1em; padding-top: 1.75em; line-height: 1.5em;">
+             <p>
+                <b><f:translate key="LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.openPdfNoteTitle"/></b><br /><br />
+                <f:translate key="LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.openPdfNoteText"/><br />
+                <f:translate key="LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.openPdfNoteReload"/><br /><br />
+                <f:translate key="LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.leavingPage"/>
+            </p>
+        </div>
+        <p>
+            <button class="btn form-pdf-link" onClick="this.disabled=true; this.innerText='<f:translate key="LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.pdfDeleted"/>'; window.open('/index.php?eID=pdfform&L={langId}&file={tempPdfFile}&filename={filename}','_blank');"><f:translate key="LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.openPdfLink"/></button>
+        </p>
+  
     </f:if>
 </div>
+
 </html>
