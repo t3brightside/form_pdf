@@ -76,6 +76,9 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
             );
         }
         
+        $filename = isset($filename) ? $filename : '';
+        $langId= isset($langId) ? $langId: '';
+
         $context = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class);
         $langId = $context->getPropertyFromAspect('language', 'id');
         $standaloneView->assignMultiple([
