@@ -31,6 +31,7 @@ class PdfResponse
             $filename = $this->filename = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('filename');
             $mpdf->Output($filename, \Mpdf\Output\Destination::INLINE);
         } else {
+            $response->getBody()->write('<h1>Error</h1><p>The file was deleted from the server after you opened it.<br />It can not be reloaded or saved again without submitting the form again.</p>');
             return $response->withStatus(404);
         }
 
