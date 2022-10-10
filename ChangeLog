@@ -8,3 +8,8 @@
 * 1.3.0
   – Implement ResponseInterface in PdfResponse.php (Thanks to @gbartolucci)
   – Confirmation finisher download file name same as PDF template
+* 1.3.1
+  – Improve error message while trying to reload PDF or open the file twice
+  – Add note to the confirmation template about file the deletion
+  – Change 'Open PDF' link to button and disable it after opening the file
+  – Fix undefined variables for filename and langId in confirmation finisher

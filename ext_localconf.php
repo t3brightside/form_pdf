@@ -32,7 +32,5 @@ $boot = function () {
 
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pdfform'] = \Brightside\FormPdf\Ajax\PdfResponse::class . '::processRequest';
 };
-
 $boot();
 unset($boot);
-
