@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') || die('Access denied.');
+defined('TYPO3') || die('Access denied.');
 
 if(!class_exists('\Mpdf\Mpdf')){
     $composerAutoloadFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('form_pdf')
@@ -20,15 +20,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Brightside\Form
 
 
 $boot = function () {
-    if (TYPO3_MODE === 'BE') {
-        /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
-        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-        $iconRegistry->registerIcon(
-            'pdf-finisher',
-            \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-            ['source' => 'EXT:form_pdf/Resources/Public/Icons/Extension.svg']
-        );
-    }
 
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pdfform'] = \Brightside\FormPdf\Ajax\PdfResponse::class . '::processRequest';
 };

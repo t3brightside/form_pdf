@@ -2,6 +2,8 @@
 
 namespace Brightside\FormPdf\Domain\Finishers;
 
+use Mpdf\Output\Destination;
+use Mpdf\Mpdf;
 use Brightside\FormPdf\Service\PdfService;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
@@ -57,7 +59,7 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
 
         $formRuntime = $this->finisherContext->getFormRuntime();
 
-        $translationService = TranslationService::getInstance();
+        $translationService = GeneralUtility::makeInstance(TranslationService::class);
         if (is_string($this->options['translation']['language'] ?? null) && $this->options['translation']['language'] !== '') {
             $languageBackup = $translationService->getLanguage();
             $translationService->setLanguage($this->options['translation']['language']);
@@ -153,7 +155,7 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
             if (
                 ($this->shortFinisherIdentifier == 'EmailToReceiver' && $isPdfAttachedToReceiver)
                 || ($this->shortFinisherIdentifier == 'EmailToSender' && $isPdfAttachedToUser)) {
-                /** @var \Mpdf\Mpdf $mpdf */
+                /** @var Mpdf $mpdf */
                 $mpdf = $this->finisherContext->getFinisherVariableProvider()->get(
                     'Pdf',
                     'mpdf',
@@ -168,7 +170,7 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
 
                 if ($mpdf) {
                     $mail->attach(
-                        $mpdf->Output('', \Mpdf\Output\Destination::STRING_RETURN),
+                        $mpdf->Output('', Destination::STRING_RETURN),
                         $filename,
                         'application/pdf'
                     );
