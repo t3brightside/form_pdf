@@ -1,5 +1,5 @@
 {
-    "name": "aschmutt/form-pdf",
+    "name": "t3brightside/form-pdf",
     "type": "typo3-cms-extension",
     "description": "TYPO3 form finisher to write form data into pre-existing PDF file.",
     "version": "12.0.0",
