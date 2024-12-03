@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brightside\FormPdf\Domain\Finishers;
 
 use Mpdf\Output\Destination;
@@ -18,6 +20,16 @@ use TYPO3\CMS\Form\Service\TranslationService;
 class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
 {
     /**
+     * @var array
+     */
+    protected $defaultOptions = [
+        'recipientName' => '',
+        'senderName' => '',
+        'addHtmlPart' => true,
+        'attachUploads' => true,
+    ];
+
+    /**
      * @inheritDoc
      */
     protected function executeInternal()
@@ -32,7 +44,7 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
             $this->options['addHtmlPart'] = false;
         }
 
-        $subject = $this->parseOption('subject');
+        $subject = (string)$this->parseOption('subject');
         $recipients = $this->getRecipients('recipients', 'recipientAddress', 'recipientName');
         $senderAddress = $this->parseOption('senderAddress');
         $senderAddress = is_string($senderAddress) ? $senderAddress : '';
@@ -41,11 +53,9 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
         $replyToRecipients = $this->getRecipients('replyToRecipients', 'replyToAddress');
         $carbonCopyRecipients = $this->getRecipients('carbonCopyRecipients', 'carbonCopyAddress');
         $blindCarbonCopyRecipients = $this->getRecipients('blindCarbonCopyRecipients', 'blindCarbonCopyAddress');
-        $addHtmlPart = $this->parseOption('addHtmlPart');
+        $addHtmlPart = $this->parseOption('addHtmlPart') ? true : false;
         $attachUploads = $this->parseOption('attachUploads');
-        $useFluidEmail = $this->parseOption('useFluidEmail');
-        $title = $this->parseOption('title');
-        $title = is_string($title) && $title !== '' ? $title : $subject;
+        $title = (string)$this->parseOption('title') ?: $subject;
 
         if (empty($subject)) {
             throw new FinisherException('The option "subject" must be set for the EmailFinisher.', 1327060320);
@@ -65,17 +75,13 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
             $translationService->setLanguage($this->options['translation']['language']);
         }
 
-        $mail = $useFluidEmail
-            ? $this
-                ->initializeFluidEmail($formRuntime)
-                ->format($addHtmlPart ? FluidEmail::FORMAT_BOTH : FluidEmail::FORMAT_PLAIN)
-                ->assign('title', $title)
-            : GeneralUtility::makeInstance(MailMessage::class);
-
-        $mail
+        $mail = $this
+            ->initializeFluidEmail($formRuntime)
             ->from(new Address($senderAddress, $senderName))
             ->to(...$recipients)
-            ->subject($subject);
+            ->subject($subject)
+            ->format($addHtmlPart ? FluidEmail::FORMAT_BOTH : FluidEmail::FORMAT_PLAIN)
+            ->assign('title', $title);
 
         if (!empty($replyToRecipients)) {
             $mail->replyTo(...$replyToRecipients);
@@ -89,41 +95,13 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
             $mail->bcc(...$blindCarbonCopyRecipients);
         }
 
-        if (!$useFluidEmail) {
-            $parts = [
-                [
-                    'format' => 'Plaintext',
-                    'contentType' => 'text/plain',
-                ],
-            ];
-
-            if ($addHtmlPart) {
-                $parts[] = [
-                    'format' => 'Html',
-                    'contentType' => 'text/html',
-                ];
-            }
-
-            foreach ($parts as $i => $part) {
-                $standaloneView = $this->initializeStandaloneView($formRuntime, $part['format']);
-                $message = $standaloneView->render();
-
-                if ($part['contentType'] === 'text/plain') {
-                    $mail->text($message);
-                } else {
-                    $mail->html($message);
-                }
-            }
-        }
-
         if (!empty($languageBackup)) {
             $translationService->setLanguage($languageBackup);
         }
 
-        $elements = $formRuntime->getFormDefinition()->getRenderablesRecursively();
-
-        if ($attachUploads) {
-            foreach ($elements as $element) {
+        //@todo: fix error in attachUploads function: getRenderablesRecursively from base class is internal
+        /*if ($attachUploads) {
+            foreach ($formRuntime->getFormDefinition()->getRenderablesRecursively() as $element) {
                 if (!$element instanceof FileUpload) {
                     continue;
                 }
@@ -132,13 +110,12 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
                     if ($file instanceof FileReference) {
                         $file = $file->getOriginalResource();
                     }
-
                     $mail->attach($file->getContents(), $file->getName(), $file->getMimeType());
                 }
             }
-        }
+        }*/
 
-        //Extended
+        //Extended Code for form_pdf
         if ($this->finisherContext->getFinisherVariableProvider()->offsetExists('Pdf')) {
             $isPdfAttachedToReceiver = $this->finisherContext->getFinisherVariableProvider()->get(
                 'Pdf',
@@ -178,6 +155,6 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
             }
         }
 
-        $useFluidEmail ? GeneralUtility::makeInstance(Mailer::class)->send($mail) : $mail->send();
+        GeneralUtility::makeInstance(Mailer::class)->send($mail);
     }
 }
