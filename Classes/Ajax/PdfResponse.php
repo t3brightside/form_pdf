@@ -34,7 +34,7 @@ class PdfResponse
             $mpdf = $this->pdf($param['file']);
         }
         if ($mpdf) {
-            $filename = $this->filename = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['filename'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['filename'] ?? null;
+            $filename = $this->filename = $request->getParsedBody()['filename'] ?? $request->getQueryParams()['filename'] ?? null;
             $mpdf->Output($filename, Destination::INLINE);
         } else {
             $response->getBody()->write('<h1>Error</h1><p>The file was deleted from the server after you opened it.<br />It can not be reloaded or saved again without submitting the form again.</p>');
