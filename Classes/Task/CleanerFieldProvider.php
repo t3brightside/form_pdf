@@ -1,5 +1,4 @@
 <?php
-
 namespace Brightside\FormPdf\Task;
 
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -9,7 +8,10 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Form\FormEngine; // Ensure FormEngine is imported
+use TYPO3\CMS\Backend\Form\FormEngine;
+use Brightside\FormPdf\Service\PdfService;  // Import PdfService
+use TYPO3\CMS\Fluid\View\StandaloneView;  // Make sure to import StandaloneView
+
 
 class CleanerFieldProvider extends AbstractAdditionalFieldProvider
 {
@@ -20,7 +22,6 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
      * @param CleanerTask $task Task object
      * @param SchedulerModuleController $schedulerModule Reference to the BE module of the Scheduler
      * @return array Additional fields
-     * @see \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface->getAdditionalFields($taskInfo, $task, $schedulerModule)
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
@@ -72,6 +73,26 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
     }
 
     /**
+     * This method is used to save any additional input into the current task object
+     * if the task class matches.
+     *
+     * @param array $submittedData Array containing the data submitted by the user
+     * @param AbstractTask $task Reference to the current task object
+     * @return void
+     */
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
+    {
+        // Obtain StandaloneView instance (use GeneralUtility if needed)
+        $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
+
+        // Create PdfService and inject the StandaloneView instance
+        $pdfService = GeneralUtility::makeInstance(PdfService::class, $standaloneView);
+
+        /** @var CleanerTask $task */
+        $task->setDays($submittedData['cleaner']['days']);
+    }
+
+    /**
      * This method checks any additional data that is relevant to the specific task.
      * If the task class is not relevant, the method is expected to return TRUE.
      *
@@ -82,34 +103,20 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
         $isValid = TRUE;
-
+/*
         if (!$submittedData['cleaner']['days']) {
             $isValid = FALSE;
 
-            // Using FlashMessage with string severity ('error' instead of FlashMessage::ERROR)
+            // Using FlashMessage with proper severity
             $flashMessage = new FlashMessage(
                 $this->getLanguageService()->sL('LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.tasks.cleaner.empty.days'),
                 'Validation Error',
-                'error'  // Using 'error' string for severity
+                ContextualFeedbackSeverity::ERROR  // Correct severity constant
             );
             $GLOBALS['BE_USER']->addFlashMessage($flashMessage);
         }
-
+*/
         return $isValid;
-    }
-
-    /**
-     * This method is used to save any additional input into the current task object
-     * if the task class matches.
-     *
-     * @param array $submittedData Array containing the data submitted by the user
-     * @param AbstractTask $task Reference to the current task object
-     * @return void
-     */
-    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
-    {
-        /** @var CleanerTask $task */
-        $task->setDays($submittedData['cleaner']['days']);
     }
 
     /**
