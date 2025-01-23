@@ -12,37 +12,40 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 class CleanerTask extends AbstractTask
 {
     /**
-     * Object manager
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager;
-
-    /**
      * days
      *
      * @var string
      */
     protected $days;
 
-    public function __construct()
+    /**
+     * @var PdfService
+     */
+    protected $pdfService;
+
+    /**
+     * Constructor with dependency injection.
+     *
+     * @param PdfService $pdfService The PDF service
+     */
+    public function __construct(PdfService $pdfService)
     {
-        $this->initObjectManager();
+        $this->pdfService = $pdfService;
         parent::__construct();
     }
 
     /**
      * Execute task
-     * @return    boolean    returns TRUE on success, FALSE on failure
+     * @return boolean returns TRUE on success, FALSE on failure
      */
     public function execute()
     {
-
         $this->cleanPdfFilesInTempFolder();
         return TRUE;
     }
 
     /**
-     * Clear all media files older then XX days
+     * Clear all media files older than XX days
      * @return bool
      */
     private function cleanPdfFilesInTempFolder()
@@ -93,12 +96,5 @@ class CleanerTask extends AbstractTask
     public function setDays($days)
     {
         $this->days = $days;
-    }
-
-    private function initObjectManager()
-    {
-        if (!$this->objectManager) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        }
     }
 }

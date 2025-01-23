@@ -3,12 +3,13 @@
 namespace Brightside\FormPdf\Task;
 
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Form\FormEngine; // Ensure FormEngine is imported
 
 class CleanerFieldProvider extends AbstractAdditionalFieldProvider
 {
@@ -42,11 +43,29 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
         $fieldCode = '<input type="text"  name="' . $fieldName . '" id="' . $fieldId . '" value="' .
             htmlspecialchars($taskInfo['days']) . '" />';
 
+        // Use LanguageService to get the label text
         $label = $this->getLanguageService()->sL('LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.tasks.cleaner.days');
-        $label = BackendUtility::wrapInHelp('grabber', $fieldId, $label);
+
+        // Ensure FormEngine class is available
+        if (class_exists(FormEngine::class)) {
+            // Use FormEngine to create the label with help text
+            $formEngine = GeneralUtility::makeInstance(FormEngine::class);
+
+            // Wrap the label and help text using FormEngine methods
+            $labelWithHelp = $formEngine->renderLabel(
+                'grabber', // Identifier for the help text
+                $fieldId, // Field ID
+                $label, // The label
+                $this->getLanguageService()->sL('LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.tasks.cleaner.help') // Help text
+            );
+        } else {
+            // Fallback method if FormEngine is not available
+            $labelWithHelp = $label;
+        }
+
         $additionalFields[$fieldId] = array(
             'code' => $fieldCode,
-            'label' => $label
+            'label' => $labelWithHelp
         );
 
         return $additionalFields;
@@ -66,10 +85,14 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
 
         if (!$submittedData['cleaner']['days']) {
             $isValid = FALSE;
-            $this->addMessage(
+
+            // Using FlashMessage with string severity ('error' instead of FlashMessage::ERROR)
+            $flashMessage = new FlashMessage(
                 $this->getLanguageService()->sL('LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.tasks.cleaner.empty.days'),
-                ContextualFeedbackSeverity::ERROR
+                'Validation Error',
+                'error'  // Using 'error' string for severity
             );
+            $GLOBALS['BE_USER']->addFlashMessage($flashMessage);
         }
 
         return $isValid;
