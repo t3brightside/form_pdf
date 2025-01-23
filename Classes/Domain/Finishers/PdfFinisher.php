@@ -65,24 +65,34 @@ class PdfFinisher extends AbstractFinisher
         /** @var PdfTemplate $pdfTemplate */
         $pdfTemplate = $this->pdfTemplateRepository->findByUid($pdfTemplateUid);
 
-        if ($pdfTemplate && $pdfTemplate->getUid() && file_exists($_SERVER['DOCUMENT_ROOT'] . $pdfTemplate->getFile()->getOriginalResource()->getPublicUrl())) {
-            $pdfTemplateFile = $pdfTemplate->getFile()->getOriginalResource()->getPublicUrl();
-            $pdfFileName = $pdfTemplate->getFile()->getOriginalResource()->getName();
+        if ($pdfTemplate && $pdfTemplate->getFile() instanceof FileReference) {
+            $pdfTemplateResource = $pdfTemplate->getFile()->getOriginalResource();
+            $pdfTemplateFile = $pdfTemplateResource->getForLocalProcessing();
+            $pdfFileName = $pdfTemplate->getFile()->getOriginalResource()->getName(); // Make sure pdfFileName is set here
         } else {
             $pdfTemplateFile = null;
-            $pdfFileName = null;
+            $pdfFileName = 'default.pdf';  // Set a default value for $pdfFileName
         }
 
         $htmlTemplateUid = (int)$this->parseOption('htmlTemplate');
-        /** @var HtmlTemplate $pdfTemplate */
+        /** @var HtmlTemplate $htmlTemplate */
         $htmlTemplate = $this->htmlTemplateRepository->findByUid($htmlTemplateUid);
-        $htmlTemplateFile =
-            $htmlTemplate && $htmlTemplate->getUid() && file_exists($_SERVER['DOCUMENT_ROOT'] . $htmlTemplate->getFile()->getOriginalResource()->getPublicUrl())
-                ? $htmlTemplate->getFile()->getOriginalResource()->getPublicUrl()
-                : null;
+        if ($htmlTemplate && $htmlTemplate->getFile() instanceof FileReference) {
+            $htmlTemplateResource = $htmlTemplate->getFile()->getOriginalResource();
+            $htmlTemplateFile = $htmlTemplateResource->getForLocalProcessing();
+        } else {
+            $htmlTemplateFile = null;  // Optionally set a default value if the HTML template is missing
+        }
 
-        $mpdf = $this->pdfService->generate($_SERVER['DOCUMENT_ROOT'] . $pdfTemplateFile, $_SERVER['DOCUMENT_ROOT'] . $htmlTemplateFile, $this->parseForm());
+        // Ensure $pdfTemplateFile and $htmlTemplateFile are valid paths before generating PDF
+        if (!$pdfTemplateFile || !$htmlTemplateFile) {
+            throw new \RuntimeException('Both PDF and HTML template files must be provided.');
+        }
 
+        // Now generate the PDF using the resolved template paths
+        $mpdf = $this->pdfService->generate($pdfTemplateFile, $htmlTemplateFile, $this->parseForm());
+
+        // Add the generated PDF and filename to the variable provider
         $this->finisherContext->getFinisherVariableProvider()->add(
             $this->shortFinisherIdentifier,
             'mpdf',
