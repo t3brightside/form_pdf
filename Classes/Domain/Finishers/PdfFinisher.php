@@ -2,6 +2,7 @@
 
 namespace Brightside\FormPdf\Domain\Finishers;
 
+use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
 use Brightside\FormPdf\Domain\Model\HtmlTemplate;
 use Brightside\FormPdf\Domain\Model\PdfTemplate;
 use Brightside\FormPdf\Domain\Repository\HtmlTemplateRepository;
@@ -11,7 +12,7 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 
-class PdfFinisher extends \TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher
+class PdfFinisher extends AbstractFinisher
 {
     /**
      * htmlTemplateRepository
@@ -30,7 +31,7 @@ class PdfFinisher extends \TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher
     /**
      * Pdf Service
      *
-     * @var \Brightside\FormPdf\Service\PdfService
+     * @var PdfService
      */
     protected $pdfService;
 

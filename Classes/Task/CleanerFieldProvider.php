@@ -2,6 +2,10 @@
 
 namespace Brightside\FormPdf\Task;
 
+use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
@@ -13,11 +17,11 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
      *
      * @param array $taskInfo Array information of task to return
      * @param CleanerTask $task Task object
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the BE module of the Scheduler
+     * @param SchedulerModuleController $schedulerModule Reference to the BE module of the Scheduler
      * @return array Additional fields
      * @see \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface->getAdditionalFields($taskInfo, $task, $schedulerModule)
      */
-    public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
         $additionalFields = array();
 
@@ -39,7 +43,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
             htmlspecialchars($taskInfo['days']) . '" />';
 
         $label = $this->getLanguageService()->sL('LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.tasks.cleaner.days');
-        $label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('grabber', $fieldId, $label);
+        $label = BackendUtility::wrapInHelp('grabber', $fieldId, $label);
         $additionalFields[$fieldId] = array(
             'code' => $fieldCode,
             'label' => $label
@@ -53,10 +57,10 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
      * If the task class is not relevant, the method is expected to return TRUE.
      *
      * @param array $submittedData Reference to the array containing the data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the BE module of the Scheduler
+     * @param SchedulerModuleController $schedulerModule Reference to the BE module of the Scheduler
      * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
      */
-    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
         $isValid = TRUE;
 
@@ -64,7 +68,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
             $isValid = FALSE;
             $this->addMessage(
                 $this->getLanguageService()->sL('LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.tasks.cleaner.empty.days'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
 
@@ -76,12 +80,12 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
      * if the task class matches.
      *
      * @param array $submittedData Array containing the data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
+     * @param AbstractTask $task Reference to the current task object
      * @return void
      */
-    public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
-        /** @var \Brightside\FormPdf\Task\CleanerTask $task */
+        /** @var CleanerTask $task */
         $task->setDays($submittedData['cleaner']['days']);
     }
 

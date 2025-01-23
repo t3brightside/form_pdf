@@ -2,18 +2,22 @@
 
 namespace Brightside\FormPdf\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+
 /**
  * HtmlTemplate
  */
-class HtmlTemplate extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class HtmlTemplate extends AbstractEntity
 {
 
     /**
      * file
      *
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
+     * @var FileReference
      */
+    #[Cascade(['value' => 'remove'])]
     protected $file = null;
 
     /**
@@ -26,7 +30,7 @@ class HtmlTemplate extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the file
      *
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $file
+     * @return FileReference $file
      */
     public function getFile()
     {
@@ -36,10 +40,10 @@ class HtmlTemplate extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the file
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $file
+     * @param FileReference $file
      * @return void
      */
-    public function setFile(\TYPO3\CMS\Extbase\Domain\Model\FileReference $file)
+    public function setFile(FileReference $file)
     {
         $this->file = $file;
     }

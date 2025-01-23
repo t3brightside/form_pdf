@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Brightside\FormPdf\Domain\Finishers;
 
+use Mpdf\Output\Destination;
+use TYPO3\CMS\Core\Context\Context;
+use Mpdf\Mpdf;
 use Brightside\FormPdf\Service\PdfService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -57,7 +60,7 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
             );
 
             if ($openPdfNewWindows) {
-                /** @var \Mpdf\Mpdf $mpdf */
+                /** @var Mpdf $mpdf */
                 $mpdf = $this->finisherContext->getFinisherVariableProvider()->get(
                     'Pdf',
                     'mpdf',
@@ -66,7 +69,7 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
 
                 if ($mpdf) {
                     $tempPdfFile = GeneralUtility::tempnam(PdfService::PDF_TEMP_PREFIX, PdfService::PDF_TEMP_SUFFIX);
-                    $mpdf->Output($tempPdfFile, \Mpdf\Output\Destination::FILE);
+                    $mpdf->Output($tempPdfFile, Destination::FILE);
                 }
             }
             $filename = $this->finisherContext->getFinisherVariableProvider()->get(
@@ -79,7 +82,7 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
         $filename = isset($filename) ? $filename : '';
         $langId= isset($langId) ? $langId: '';
 
-        $context = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class);
+        $context = GeneralUtility::makeInstance(Context::class);
         $langId = $context->getPropertyFromAspect('language', 'id');
         $standaloneView->assignMultiple([
             'message' => $message,

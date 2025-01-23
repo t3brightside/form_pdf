@@ -2,8 +2,11 @@
 
 namespace Brightside\FormPdf\Service;
 
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use \Mpdf\Mpdf;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Core\Core\Environment;
 
@@ -13,18 +16,11 @@ class PdfService
     const PDF_TEMP_PREFIX = 'form-tempfile-';
     const PDF_TEMP_SUFFIX = '-generated';
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
+    private StandaloneView $standaloneView;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @internal
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    public function __construct(StandaloneView $standaloneView)
     {
-        $this->objectManager = $objectManager;
+        $this->standaloneView = $standaloneView;
     }
 
     /**
@@ -32,10 +28,10 @@ class PdfService
      * @param $htmlFile
      * @param array $values
      * @return Mpdf
-     * @throws \Mpdf\MpdfException
-     * @throws \setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException
-     * @throws \setasign\Fpdi\PdfParser\PdfParserException
-     * @throws \setasign\Fpdi\PdfParser\Type\PdfTypeException
+     * @throws MpdfException
+     * @throws CrossReferenceException
+     * @throws PdfParserException
+     * @throws PdfTypeException
      */
     public function generate(
         $pdfFile,
@@ -52,7 +48,7 @@ class PdfService
         }
 
 //      $mpdf = new \Mpdf\Mpdf();
-        $mpdf = new \Mpdf\Mpdf(['tempDir' => Environment::getVarPath()]);
+        $mpdf = new Mpdf(['tempDir' => Environment::getVarPath()]);
         $mpdf->SetDocTemplate($pdfFile);
         $pagecount = $mpdf->SetSourceFile($pdfFile);
         for ($i=1; $i<=$pagecount; $i++) {
@@ -75,11 +71,10 @@ class PdfService
      */
     private function parse($htmlFile, $values)
     {
-        $standaloneView = $this->objectManager->get(StandaloneView::class);
-        $standaloneView->setFormat('html');
+        $this->standaloneView->setFormat('html');
 
-        $standaloneView->setTemplatePathAndFilename($htmlFile);
-        $standaloneView->assignMultiple($values);
-        return $standaloneView->render();
+        $this->standaloneView->setTemplatePathAndFilename($htmlFile);
+        $this->standaloneView->assignMultiple($values);
+        return $this->standaloneView->render();
     }
 }

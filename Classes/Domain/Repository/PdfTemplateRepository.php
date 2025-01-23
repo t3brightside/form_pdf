@@ -1,6 +1,7 @@
 <?php
 namespace Brightside\FormPdf\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /***
  *
@@ -15,6 +16,6 @@ namespace Brightside\FormPdf\Domain\Repository;
 /**
  * The repository for PdfTemplates
  */
-class PdfTemplateRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class PdfTemplateRepository extends Repository
 {
 }

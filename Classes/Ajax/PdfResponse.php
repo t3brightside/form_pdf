@@ -2,6 +2,12 @@
 
 namespace Brightside\FormPdf\Ajax;
 
+use Mpdf\Output\Destination;
+use Mpdf\Mpdf;
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use Brightside\FormPdf\Service\PdfService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -14,10 +20,10 @@ class PdfResponse
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Mpdf\MpdfException
-     * @throws \setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException
-     * @throws \setasign\Fpdi\PdfParser\PdfParserException
-     * @throws \setasign\Fpdi\PdfParser\Type\PdfTypeException
+     * @throws MpdfException
+     * @throws CrossReferenceException
+     * @throws PdfParserException
+     * @throws PdfTypeException
      */
     public function processRequest(ServerRequestInterface $request)
     {
@@ -28,8 +34,8 @@ class PdfResponse
             $mpdf = $this->pdf($param['file']);
         }
         if ($mpdf) {
-            $filename = $this->filename = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('filename');
-            $mpdf->Output($filename, \Mpdf\Output\Destination::INLINE);
+            $filename = $this->filename = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['filename'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['filename'] ?? null;
+            $mpdf->Output($filename, Destination::INLINE);
         } else {
             $response->getBody()->write('<h1>Error</h1><p>The file was deleted from the server after you opened it.<br />It can not be reloaded or saved again without submitting the form again.</p>');
             return $response->withStatus(404);
@@ -40,10 +46,10 @@ class PdfResponse
 
     /**
      * @param $uploadedTempFileName
-     * @return \Mpdf\Mpdf|null
-     * @throws \setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException
-     * @throws \setasign\Fpdi\PdfParser\PdfParserException
-     * @throws \setasign\Fpdi\PdfParser\Type\PdfTypeException
+     * @return Mpdf|null
+     * @throws CrossReferenceException
+     * @throws PdfParserException
+     * @throws PdfTypeException
      */
     private function pdf($uploadedTempFileName)
     {
@@ -53,7 +59,7 @@ class PdfResponse
             GeneralUtility::validPathStr($uploadedTempFile)
             && @is_file($uploadedTempFile)
         ) {
-            $mpdf = new \Mpdf\Mpdf(['tempDir' => Environment::getVarPath()]);
+            $mpdf = new Mpdf(['tempDir' => Environment::getVarPath()]);
             $mpdf->SetDocTemplate($uploadedTempFile);
             $pagecount = $mpdf->SetSourceFile($uploadedTempFile);
             for ($i=1; $i<=$pagecount; $i++) {
