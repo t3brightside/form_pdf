@@ -2,7 +2,6 @@
     "name": "t3brightside/form-pdf",
     "type": "typo3-cms-extension",
     "description": "TYPO3 form finisher to write form data into pre-existing PDF file.",
-    "version": "12.0.0",
     "homepage": "https://github.com/t3brightside/form_pdf/",
     "keywords": ["typo3", "pdf", "form"],
     "license": "GPL-2.0-or-later",
