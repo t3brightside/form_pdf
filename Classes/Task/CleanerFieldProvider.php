@@ -40,7 +40,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
 
         $fieldId = 'task_days';
         $fieldName = 'tx_scheduler[cleaner][days]';
-        $fieldCode = '<input type="text"  name="' . $fieldName . '" id="' . $fieldId . '" value="' .
+        $fieldCode = '<input type="text" class="form-control" name="' . $fieldName . '" id="' . $fieldId . '" value="' .
             htmlspecialchars($taskInfo['days']) . '" />';
 
         // Use LanguageService to get the label text
