@@ -8,7 +8,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Form\FormEngine;
 use Brightside\FormPdf\Service\PdfService;  // Import PdfService
 use TYPO3\CMS\Fluid\View\StandaloneView;  // Make sure to import StandaloneView
 
@@ -47,26 +46,11 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
         // Use LanguageService to get the label text
         $label = $this->getLanguageService()->sL('LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.tasks.cleaner.days');
 
-        // Ensure FormEngine class is available
-        if (class_exists(FormEngine::class)) {
-            // Use FormEngine to create the label with help text
-            $formEngine = GeneralUtility::makeInstance(FormEngine::class);
-
-            // Wrap the label and help text using FormEngine methods
-            $labelWithHelp = $formEngine->renderLabel(
-                'grabber', // Identifier for the help text
-                $fieldId, // Field ID
-                $label, // The label
-                $this->getLanguageService()->sL('LLL:EXT:form_pdf/Resources/Private/Language/locallang.xlf:form_pdf.tasks.cleaner.help') // Help text
-            );
-        } else {
-            // Fallback method if FormEngine is not available
-            $labelWithHelp = $label;
-        }
+        
 
         $additionalFields[$fieldId] = array(
             'code' => $fieldCode,
-            'label' => $labelWithHelp
+            'label' => $label
         );
 
         return $additionalFields;
