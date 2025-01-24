@@ -13,3 +13,22 @@
   – Add note to the confirmation template about file the deletion
   – Change 'Open PDF' link to button and disable it after opening the file
   – Fix undefined variables for filename and langId in confirmation finisher
+* 2.0.0
+  * 997e4f9 (HEAD -> master, origin/master, origin/HEAD) [TASK] improve file matching schema and allow 0 days delete
+  * 2239ab3 [TASK] clean up
+  * 4ab932d [TASK] put back the cleaner logic
+  * e681e55 [TASK] fix scheduler tasks for v12
+  * 230a434 [TASK] v12 compatibility for scheduler task
+  * af22d71 [TASK] clean up for v12
+  * 12d08bb [TASK] fix file handling for v12
+  * 6eaeb3f [TASK] add .gitignore
+  * 8f63d0f [TASK] add editorconfig
+  * 3bb06e0 [TASK] remove legacy configuration file
+  * 64f2c7b [TASK] remove version number
+  * ad0c84a [TASK] change $GLOBALS['TYPO3_REQUEST'] to $request
+  * 433394d Merge pull request #9 from aschmutt/update_v12
+  |\  
+  | * 67d418d Fix error with Standalone View
+  | * f62df2b composer name updated
+  | * 7fb7390 Code Update to TYPO3 v12
+  |/  
