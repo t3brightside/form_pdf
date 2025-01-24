@@ -70,9 +70,7 @@ class CleanerTask extends AbstractTask
                 unlink($filePath);
             }
         }
-
-        return $return;
-        
+                
         return $return;
     }
 
