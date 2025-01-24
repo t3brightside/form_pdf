@@ -51,13 +51,20 @@ class CleanerTask extends AbstractTask
         $return = true;
         $pdfTempDir = Environment::getVarPath() . '/transient/';
         $days = (int)$this->getDays();
-        $pastDay = date("Y-m-d", strtotime('-' . $days . ' days'));
-        $pastTime = strtotime($pastDay . '23:59:59');
+        
+        // If $days is 0, use the current timestamp as the cutoff time
+        if ($days === 0) {
+            $pastTime = time(); // Current timestamp
+        } else {
+            $pastDay = date("Y-m-d", strtotime('-' . $days . ' days'));
+            $pastTime = strtotime($pastDay . '23:59:59');
+        }
 
         $finder = new Finder();
         try {
+            // Use a broader pattern to match the provided filenames
             $finder->files()->depth(0)
-                ->name(PdfService::PDF_TEMP_PREFIX . '*' . PdfService::PDF_TEMP_SUFFIX)
+                ->name('/^(fal|form)-tempfile-.*$/') // Matches all filenames starting with fal-tempfile or form-tempfile
                 ->in($pdfTempDir);
         } catch (\InvalidArgumentException $e) {
             $finder = [];
@@ -66,11 +73,11 @@ class CleanerTask extends AbstractTask
         foreach ($finder as $file) {
             /** @var SplFileInfo $file */
             $filePath = GeneralUtility::fixWindowsFilePath($file->getPath()) . '/' . $file->getFilename();
-            if ($file->isExecutable() && $file->isFile() && $file->getMTime() <= $pastTime) {
+            if ($file->isFile() && $file->getMTime() <= $pastTime) {
                 unlink($filePath);
             }
         }
-                
+
         return $return;
     }
 
