@@ -7,6 +7,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Core\Core\Environment;
+use Symfony\Component\Finder\Finder;
 
 class CleanerTask extends AbstractTask
 {
@@ -53,7 +54,24 @@ class CleanerTask extends AbstractTask
         $pastDay = date("Y-m-d", strtotime('-' . $days . ' days'));
         $pastTime = strtotime($pastDay . '23:59:59');
 
-        // Your cleaning logic here...
+        $finder = new Finder();
+        try {
+            $finder->files()->depth(0)
+                ->name(PdfService::PDF_TEMP_PREFIX . '*' . PdfService::PDF_TEMP_SUFFIX)
+                ->in($pdfTempDir);
+        } catch (\InvalidArgumentException $e) {
+            $finder = [];
+        }
+
+        foreach ($finder as $file) {
+            /** @var SplFileInfo $file */
+            $filePath = GeneralUtility::fixWindowsFilePath($file->getPath()) . '/' . $file->getFilename();
+            if ($file->isExecutable() && $file->isFile() && $file->getMTime() <= $pastTime) {
+                unlink($filePath);
+            }
+        }
+
+        return $return;
         
         return $return;
     }
