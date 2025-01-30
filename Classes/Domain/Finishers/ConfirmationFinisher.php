@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Brightside\FormPdf\Domain\Finishers;
 
 use Mpdf\Output\Destination;
-use TYPO3\CMS\Core\Context\Context;
 use Mpdf\Mpdf;
-use Brightside\FormPdf\Service\PdfService;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use Brightside\FormPdf\Service\PdfService;
 
 /**
  * @inheritDoc
@@ -20,7 +22,7 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
     /**
      * @inheritDoc
      */
-    protected function executeInternal()
+    protected function executeInternal(): string
     {
         $contentElementUid = $this->parseOption('contentElementUid');
         $typoscriptObjectPath = $this->parseOption('typoscriptObjectPath');
@@ -45,9 +47,7 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
             $message = $this->parseOption('message');
         }
 
-        $standaloneView = $this->initializeStandaloneView(
-            $this->finisherContext->getFormRuntime()
-        );
+        
 
        
         //Extended
@@ -82,17 +82,58 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
         $filename = isset($filename) ? $filename : '';
         $langId= isset($langId) ? $langId: '';
 
+        
         $context = GeneralUtility::makeInstance(Context::class);
         $langId = $context->getPropertyFromAspect('language', 'id');
-        $standaloneView->assignMultiple([
-            'message' => $message,
-            'tempPdfFile' => $tempPdfFile ? PathUtility::basename($tempPdfFile) : '',
-            'isPreparedMessage' => !empty($contentElementUid),
-            'langId' => $langId,
-            'filename' => $filename
-        ]);
+      
+        $typo3Version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Typo3Version::class);
+        $majorVersion = $typo3Version->getMajorVersion();
 
-        return $standaloneView->render();
+        if ($majorVersion >= 13) {
+            $templateRootPaths = $this->parseOption('templateRootPaths');
+            $partialRootPaths = $this->parseOption('partialRootPaths');
+            $layoutRootPaths = $this->parseOption('layoutRootPaths');
+            $templateName = $this->parseOption('templateName');
+
+            // Create Fluid View
+            /** @var TemplateView $view */
+            $view = GeneralUtility::makeInstance(TemplateView::class);
+            $view->setTemplateRootPaths($templateRootPaths);
+            $view->setPartialRootPaths($partialRootPaths);
+            $view->setLayoutRootPaths($layoutRootPaths);
+            $view->setTemplate($templateName);
+    
+            $view->assignMultiple([
+                'message' => $message,
+                'tempPdfFile' => $tempPdfFile ? PathUtility::basename($tempPdfFile) : '',
+                'isPreparedMessage' => !empty($contentElementUid),
+                'langId' => $langId,
+                'filename' => $filename
+            ]);
+
+            $output = $view->render();
+
+            // Check if rendering is successful, otherwise return fallback content
+            if ($output === null) {
+                // Add fallback content to return if rendering fails
+                $output = 'An error occurred while rendering the confirmation template.';
+            }
+            return (string)$output;
+        } else {
+            $standaloneView = $this->initializeStandaloneView(
+                $this->finisherContext->getFormRuntime()
+            );
+            $context = GeneralUtility::makeInstance(Context::class);
+            $langId = $context->getPropertyFromAspect('language', 'id');
+            $standaloneView->assignMultiple([
+                'message' => $message,
+                'tempPdfFile' => $tempPdfFile ? PathUtility::basename($tempPdfFile) : '',
+                'isPreparedMessage' => !empty($contentElementUid),
+                'langId' => $langId,
+                'filename' => $filename
+            ]);
+
+            return $standaloneView->render();
+        }
     }
 }
-

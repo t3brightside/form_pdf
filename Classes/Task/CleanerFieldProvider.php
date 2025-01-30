@@ -8,9 +8,10 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Brightside\FormPdf\Service\PdfService;  // Import PdfService
-use TYPO3\CMS\Fluid\View\StandaloneView;  // Make sure to import StandaloneView
-
+use Brightside\FormPdf\Service\PdfService;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
+use TYPO3\CMS\Core\Information\Typo3Version;
 
 class CleanerFieldProvider extends AbstractAdditionalFieldProvider
 {
@@ -24,17 +25,31 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
-        $additionalFields = array();
+        $typo3Version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Typo3Version::class);
+        $majorVersion = $typo3Version->getMajorVersion();
 
-        /** @var CleanerTask $task */
+        $additionalFields = array();       
 
         if (empty($taskInfo['days'])) {
-            if ($schedulerModule->getCurrentAction() == 'add') {
-                $taskInfo['days'] = '5';
-            } elseif ($schedulerModule->getCurrentAction() == 'edit') {
-                $taskInfo['days'] = $task->getDays();
-            } else {
-                $taskInfo['days'] = $task->getDays();
+            if ($majorVersion >= 13) {
+                $action = $schedulerModule->getCurrentAction();
+
+                if ($action === SchedulerManagementAction::ADD) {
+                    $taskInfo['days'] = '5';
+                } elseif ($action === SchedulerManagementAction::EDIT) {
+                    $taskInfo['days'] = $task->getDays();
+                } else {
+                    $taskInfo['days'] = $task->getDays();
+                }
+            } else
+            {
+                if ($schedulerModule->getCurrentAction() == 'add') {
+                    $taskInfo['days'] = '5';
+                } elseif ($schedulerModule->getCurrentAction() == 'edit') {
+                    $taskInfo['days'] = $task->getDays();
+                } else {
+                    $taskInfo['days'] = $task->getDays();
+                }
             }
         }
 
