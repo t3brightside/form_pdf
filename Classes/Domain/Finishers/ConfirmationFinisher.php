@@ -46,10 +46,7 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
         } else {
             $message = $this->parseOption('message');
         }
-
         
-
-       
         //Extended
         $tempPdfFile = '';
         if ($this->finisherContext->getFinisherVariableProvider()->offsetExists('Pdf')) {
@@ -113,11 +110,10 @@ class ConfirmationFinisher extends \TYPO3\CMS\Form\Domain\Finishers\Confirmation
 
             $output = $view->render();
 
-            // Check if rendering is successful, otherwise return fallback content
             if ($output === null) {
-                // Add fallback content to return if rendering fails
                 $output = 'An error occurred while rendering the confirmation template.';
             }
+
             return (string)$output;
         } else {
             $standaloneView = $this->initializeStandaloneView(
