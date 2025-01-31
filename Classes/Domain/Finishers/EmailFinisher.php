@@ -99,8 +99,7 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
             $translationService->setLanguage($languageBackup);
         }
 
-        //@todo: fix error in attachUploads function: getRenderablesRecursively from base class is internal
-        /*if ($attachUploads) {
+        if ($attachUploads) {
             foreach ($formRuntime->getFormDefinition()->getRenderablesRecursively() as $element) {
                 if (!$element instanceof FileUpload) {
                     continue;
@@ -113,7 +112,7 @@ class EmailFinisher extends \TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
                     $mail->attach($file->getContents(), $file->getName(), $file->getMimeType());
                 }
             }
-        }*/
+        }
 
         //Extended Code for form_pdf
         if ($this->finisherContext->getFinisherVariableProvider()->offsetExists('Pdf')) {
