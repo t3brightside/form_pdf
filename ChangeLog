@@ -34,3 +34,9 @@
   | * f62df2b composer name updated
   | * 7fb7390 Code Update to TYPO3 v12
   |/  
+* 2.1.0
+  * 4288b4e [FIX] #13 reinstate original file attachments feature for e-mal finishers
+  * c4f6725 [TASK] clean up
+  * 8d5d208 [TASK] #12 add TYPO3 v13 compatibility
+  * 7145ddb [TASK] #11 Styling for "days" input field in scheduler
+  * 6c9799d [TASK] #10 No TYPO3\CMS\Backend\Form\FormEngine any more
